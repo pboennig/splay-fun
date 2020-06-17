@@ -11,10 +11,12 @@
 
 #define Splay
 #include <cstddef>
+#include <vector>
 typedef struct Node {
     int key;
     Node* left;
     Node* right;
+    Node* parent; // for ease of splay
 } Node;
 
 class SplayTree {
@@ -28,17 +30,16 @@ class SplayTree {
         void remove(int val); // no-op if not in tree
         bool lookup(int val);
 
-        void print();
+        std::vector<int> vec();
 
     private:
         Node* root;
         void splay(Node *last); // core splay operation
 
         // recursive helper functions
-        Node* insert_r(int val, Node* n);
-        void print_r(Node* n);
+        std::vector<int> vec_r(Node* n);
         void delete_r(Node* n);
-        bool lookup_r(int val, Node* n);
         Node* succ_r(Node * n);
+        Node* find(Node * n, int val);
 };
 #endif

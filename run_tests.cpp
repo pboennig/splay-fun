@@ -1,21 +1,41 @@
 #include "splay.h"
 #include <iostream>
+#include <set>
 
-int main() {
+bool check_equal(SplayTree& st, std::set<int>& s) {
+    std::vector<int> v = st.vec();
+    size_t i = 0;
+    for (auto it = s.begin(); it != s.end(); ++it) {
+        if (*it != v[i]) {
+            return false;
+        }
+        ++i;
+    }
+    return true;
+}
 
-    SplayTree splay_tree;
-    for (int i = 0; i < 10; i++)
-        splay_tree.insert(i);
+bool insert_tests(SplayTree& st, std::set<int>& s) {
+    for (int i = 0; i < 10; i++) {
+        st.insert(i);
+        s.insert(i);
+    }
+    return check_equal(st, s);
+}
 
-    splay_tree.print();
-
-    for (int i = 2; i < 20; i += 2) 
-        std::cout << i << ": " << splay_tree.lookup(i) << std::endl;
-
-    for (int i = 1; i < 20; i += 2) {
-        std::cout << "removing " << i << std::endl;
-        splay_tree.remove(i);
+bool remove_tests(SplayTree& st, std::set<int>& s) {
+    for (int i = 2; i < 20; i += 1) {
+        st.remove(i);
+        s.erase(i);
     }
 
-    splay_tree.print();
+    return check_equal(st, s);
+}
+
+int main() {
+    SplayTree splay_tree;
+    std::set<int> s;
+    bool i = insert_tests(splay_tree, s);
+    bool r = remove_tests(splay_tree, s);
+    std::cout << "Insertion tests: " << i << std::endl;
+    std::cout << "Remove tests: " << r << std::endl;
 }
