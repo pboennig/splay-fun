@@ -30,16 +30,21 @@ class SplayTree {
         void remove(int val); // no-op if not in tree
         bool lookup(int val);
 
+        // returns SplayTree as std::vector<int>
         std::vector<int> vec();
 
     private:
         Node* root;
         void splay(Node *last); // core splay operation
 
-        // recursive helper functions
-        std::vector<int> vec_r(Node* n);
+        //recursive helpers
+        std::vector<int> vec_r(Node* n); 
         void delete_r(Node* n);
         Node* succ_r(Node * n);
         Node* find(Node * n, int val);
+
+        // remove helpers
+        void remove_node(Node* curr); // removes node (not value)
+        void fix_parent(Node* curr, Node* succ); // cleans up parent pointers
 };
 #endif

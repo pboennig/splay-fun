@@ -16,34 +16,50 @@ void SplayTree::delete_r(Node* n) {
     delete n;
 }
 
-void SplayTree::remove(int val) {
-    Node* curr = find(root, val);
-
-    if (!curr) return; // not in tree
-
-    Node* succ;
-    if (!curr->left && !curr->right)
-        succ = nullptr; //leaf node, just delete
-    else if (!curr->left)
-        succ = curr->right;
-    else if (!curr->right)
-        succ = curr->left;
-    else
-        succ = succ_r(curr); //in-order successor
-    
+void SplayTree::fix_parent(Node* curr, Node* succ) {
+    int val = curr->key;
     if (curr->parent) {
         if (val < curr->parent->key)
             curr->parent->left = succ;
         else
             curr->parent->right = succ;
     } else {
-        root = succ; // removing root
+        root = succ;
     }
-    delete curr;
+}
+
+void SplayTree::remove(int val) {
+    Node* curr = find(root, val);
+    if (!curr) return; // not in tree -> no-op
+    remove_node(curr);
+}
+
+void SplayTree::remove_node(Node* curr) {
+    if (!curr->left && !curr->right) {
+        // Case 1: No children
+        fix_parent(curr, nullptr);
+        delete curr;
+    } else if (!curr->left) {
+        // Case 2a: Only right child 
+        fix_parent(curr, curr->right);
+        curr->right->parent = curr->parent;
+        delete curr;
+    } else if (!curr->right) {
+        // Case 2b: Only left child 
+        fix_parent(curr, curr->left);
+        curr->left->parent = curr->parent;
+        delete curr;
+    } else {
+        // Case 3: Two children
+        Node* succ = succ_r(curr);
+        curr->key = succ->key;
+        remove_node(succ); 
+    }
 }
 
 Node* SplayTree::succ_r(Node * n) {
-    Node* succ = n->right;
+    // find left-most right child (successor)
+    Node* succ = n->right; 
     while (succ->left) { succ = succ->left; }
     return succ;
 }
@@ -69,8 +85,6 @@ void SplayTree::insert(int val) {
     } else {
         root = n;
     }
-    
-    // splay(); // splay the tree
 }
 
 bool SplayTree::lookup(int val) {
