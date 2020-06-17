@@ -6,6 +6,19 @@
 #include <random>
 
 
+void print_vecs(SplayTree& st, std::set<int>& s) {
+    std::vector<int> v = st.vec();
+    std::cout << "Splay tree: ";
+    for (const int& i: v)
+        std::cout << i << " ";
+    std::cout << std::endl;
+
+    std::cout << "Set: ";
+    for (const int& i: s)
+        std::cout << i << " ";
+    std::cout << std::endl;
+}
+
 bool check_equal(SplayTree& st, std::set<int>& s) {
     std::vector<int> v = st.vec();
     size_t i = 0;
@@ -18,22 +31,21 @@ bool check_equal(SplayTree& st, std::set<int>& s) {
     return true;
 }
 
-bool insert_tests(SplayTree& st, std::set<int>& s, std::vector<int> elems, std::mt19937 g) {
+bool insert_tests(SplayTree& st, std::set<int>& s, std::vector<int>& elems, std::mt19937 g) {
     std::shuffle(elems.begin(), elems.end(), g);
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 30; i++) {
         st.insert(elems[i]);
         s.insert(elems[i]);
     }
     return check_equal(st, s);
 }
 
-bool remove_tests(SplayTree& st, std::set<int>& s, std::vector<int> elems, std::mt19937 g) {
+bool remove_tests(SplayTree& st, std::set<int>& s, std::vector<int>& elems, std::mt19937 g) {
     std::shuffle(elems.begin(), elems.end(), g);
-    for (int i = 1; i < 20; i++) {
+    for (int i = 0; i < 50; i++) {
         st.remove(elems[i]);
         s.erase(elems[i]);
     }
-
     return check_equal(st, s);
 }
 

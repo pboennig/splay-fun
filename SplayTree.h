@@ -48,7 +48,7 @@ class SplayTree {
         void fix_parent(Node* curr, Node* succ); // cleans up parent pointers
 
         // rotations
-        void rotate_right(Node* root);
-        void rotate_left(Node* root);
+        void rotate_right(Node* n);
+        void rotate_left(Node* n);
 };
 #endif

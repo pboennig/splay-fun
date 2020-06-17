@@ -89,10 +89,14 @@ void SplayTree::insert(int val) {
     } else {
         root = n;
     }
+    splay(n);
 }
 
 bool SplayTree::lookup(int val) {
-    return find(root, val) != nullptr;
+    Node* n = find(root, val);
+    if (!n) return false;
+    splay(n);
+    return true;
 }
 
 Node* SplayTree::find(Node* n, int val) {
