@@ -11,4 +11,11 @@ int main() {
 
     for (int i = 2; i < 20; i += 2) 
         std::cout << i << ": " << splay_tree.lookup(i) << std::endl;
+
+    for (int i = 1; i < 20; i += 2) {
+        std::cout << "removing " << i << std::endl;
+        splay_tree.remove(i);
+    }
+
+    splay_tree.print();
 }

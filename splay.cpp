@@ -6,14 +6,52 @@ SplayTree::SplayTree() {
 }
 
 SplayTree::~SplayTree() {
-    root = nullptr;
+    delete_r(root);
 }
 
-void::SplayTree::delete_r(Node* n) {
+void SplayTree::delete_r(Node* n) {
     if (!n) return;
     delete_r(n->left);
     delete_r(n->right);
     delete n;
+}
+
+void SplayTree::remove(int val) {
+    Node* prev = nullptr;
+    Node* curr = root;
+    while (curr) {
+        if (curr->key == val) break;
+        
+        prev = curr;
+        if (val < curr->key)
+            curr = curr->left;
+        else
+            curr = curr->right;
+    }
+    if (!curr) return; // not in tree
+
+    Node* succ;
+    if (!curr->left && !curr->right)
+        succ = nullptr; //leaf node, just delete
+    else if (!curr->left)
+        succ = curr->right;
+    else if (!curr->right)
+        succ = curr->left;
+    else
+        succ = succ_r(curr); //in-order successor
+       
+    delete curr;
+
+    if (val < prev->key)
+        prev->left = succ;
+    else
+        prev->right = succ;
+}
+
+Node* SplayTree::succ_r(Node * n) {
+    Node* succ = n->right;
+    while (succ) { succ = succ->left; }
+    return succ;
 }
 
 void SplayTree::insert(int val) {

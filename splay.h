@@ -39,5 +39,6 @@ class SplayTree {
         void print_r(Node* n);
         void delete_r(Node* n);
         bool lookup_r(int val, Node* n);
+        Node* succ_r(Node * n);
 };
 #endif
