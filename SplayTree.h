@@ -35,7 +35,7 @@ class SplayTree {
 
     private:
         Node* root;
-        void splay(Node *last); // core splay operation
+        void splay(Node* n); // core splay operation
 
         //recursive helpers
         std::vector<int> vec_r(Node* n); 
@@ -46,5 +46,9 @@ class SplayTree {
         // remove helpers
         void remove_node(Node* curr); // removes node (not value)
         void fix_parent(Node* curr, Node* succ); // cleans up parent pointers
+
+        // rotations
+        void rotate_right(Node* root);
+        void rotate_left(Node* root);
 };
 #endif

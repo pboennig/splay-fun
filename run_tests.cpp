@@ -1,4 +1,4 @@
-#include "splay.h"
+#include "SplayTree.h"
 #include <cmath>
 #include <iostream>
 #include <set>
