@@ -9,10 +9,6 @@ SplayTree::SplayTree() {
     root = nullptr;
 }
 
-SplayTree::~SplayTree() {
-}
-
-
 void SplayTree::fix_parent(std::shared_ptr<Node> curr, std::shared_ptr<Node> succ) {
     int val = curr->key;
     if (curr->parent) {

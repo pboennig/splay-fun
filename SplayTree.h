@@ -23,7 +23,7 @@ class SplayTree {
     public: 
         SplayTree();
 
-        ~SplayTree();
+        ~SplayTree() = default;
 
         // BST ops
         void insert(int val);
