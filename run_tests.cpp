@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <random>
 
+int NUM_ELEMS = 100000;
 
 void print_vecs(SplayTree& st, std::set<int>& s) {
     std::vector<int> v = st.vec();
@@ -33,7 +34,7 @@ bool check_equal(SplayTree& st, std::set<int>& s) {
 
 bool insert_tests(SplayTree& st, std::set<int>& s, std::vector<int>& elems, std::mt19937 g) {
     std::shuffle(elems.begin(), elems.end(), g);
-    for (int i = 0; i < 30; i++) {
+    for (int i = 0; i < NUM_ELEMS / 3; i++) {
         st.insert(elems[i]);
         s.insert(elems[i]);
     }
@@ -42,7 +43,7 @@ bool insert_tests(SplayTree& st, std::set<int>& s, std::vector<int>& elems, std:
 
 bool remove_tests(SplayTree& st, std::set<int>& s, std::vector<int>& elems, std::mt19937 g) {
     std::shuffle(elems.begin(), elems.end(), g);
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < NUM_ELEMS; i++) {
         st.remove(elems[i]);
         s.erase(elems[i]);
     }
@@ -51,7 +52,7 @@ bool remove_tests(SplayTree& st, std::set<int>& s, std::vector<int>& elems, std:
 
 int main() {
     std::vector<int> elems;
-    for (int i = 0; i < 50; i++) 
+    for (int i = 0; i < NUM_ELEMS; i++) 
         elems.push_back(i);
 
     std::random_device rd;
