@@ -14,9 +14,9 @@
 #include <vector>
 typedef struct Node {
     int key;
-    Node* left;
-    Node* right;
-    Node* parent; // for ease of splay
+    std::shared_ptr<Node> left;
+    std::shared_ptr<Node> right;
+    std::shared_ptr<Node> parent;
 } Node;
 
 class SplayTree {
@@ -30,25 +30,29 @@ class SplayTree {
         void remove(int val); // no-op if not in tree
         bool lookup(int val);
 
+        std::shared_ptr<Node> get_root() const;
+
+        void join(std::shared_ptr<Node> T); // assuming all elements rooted at T are greater than max(this)
+
+
         // returns SplayTree as std::vector<int>
         std::vector<int> vec();
 
     private:
-        Node* root;
-        void splay(Node* n); // core splay operation
+        std::shared_ptr<Node> root;
+        void splay(std::shared_ptr<Node> n); // core splay operation
 
         //recursive helpers
-        std::vector<int> vec_r(Node* n); 
-        void delete_r(Node* n);
-        Node* succ_r(Node * n);
-        Node* find(Node * n, int val);
+        std::vector<int> vec_r(std::shared_ptr<Node> n); 
+        std::shared_ptr<Node> succ_r(std::shared_ptr<Node> n);
+        std::shared_ptr<Node> find(std::shared_ptr<Node> n, int val);
 
         // remove helpers
-        void remove_node(Node* curr); // removes node (not value)
-        void fix_parent(Node* curr, Node* succ); // cleans up parent pointers
+        void remove_node(std::shared_ptr<Node> curr); // removes node (not value)
+        void fix_parent(std::shared_ptr<Node> curr, std::shared_ptr<Node> succ); // cleans up parent pointers
 
         // rotations
-        void rotate_right(Node* n);
-        void rotate_left(Node* n);
+        void rotate_right(std::shared_ptr<Node> n);
+        void rotate_left(std::shared_ptr<Node> n);
 };
 #endif
