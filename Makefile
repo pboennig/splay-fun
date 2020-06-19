@@ -9,7 +9,7 @@ LDFLAGS=-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib
 all: run-tests
 
 run-tests: $(OBJ_FILES) run_tests.o
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -g -fsanitize=leak -o $@ $^ $(LDFLAGS) 
 
 %.o: %.cpp $(H_FILES) Makefile
 	$(CC) -c $(CPP_FLAGS) -o $@ $< 
