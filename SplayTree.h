@@ -32,6 +32,9 @@ class SplayTree {
         // returns SplayTree as std::vector<int>
         std::vector<int> vec();
 
+        // join T into this, assuming that all elements in T are greater than the largest element in this
+        void join(SplayTree T);
+
     private:
         std::shared_ptr<Node> root;
         // splays Node n to root

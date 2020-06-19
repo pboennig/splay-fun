@@ -49,7 +49,34 @@ bool remove_tests(SplayTree& st, std::set<int>& s, std::vector<int>& elems, std:
     }
     return check_equal(st, s);
 }
+bool join_tests(std::mt19937 g) {
+    std::set<int> s;
+    std::set<int> t;
 
+    SplayTree st_s;
+    SplayTree st_t;
+
+    std::vector<int> v_1(100);
+    std::vector<int> v_2(100);
+    
+    std::iota(v_1.begin(), v_1.end(), 0);
+    std::iota(v_2.begin(), v_2.end(), 100);
+
+    std::shuffle(v_1.begin(), v_1.end(), g);
+    std::shuffle(v_2.begin(), v_2.end(), g);
+
+    for (int &i: v_1) {
+        s.insert(i);
+        st_s.insert(i);
+    }
+    std::for_each(v_1.begin(), v_1.end(), [&s, &st_s](int &i) {
+                                           s.insert(i); st_s.insert(i);});
+    std::for_each(v_2.begin(), v_2.end(), [&t, &st_t](int &i) {
+                                           t.insert(i); st_t.insert(i);});
+    s.merge(t);
+    st_s.join(st_t);
+    return check_equal(st_s, s);
+}
 int main() {
     std::vector<int> elems;
     for (int i = 0; i < NUM_ELEMS; i++) 
@@ -62,6 +89,9 @@ int main() {
     std::set<int> s;
     bool i = insert_tests(splay_tree, s, elems, g);
     bool r = remove_tests(splay_tree, s, elems, g);
+    bool j = join_tests(g);
     std::cout << "Insertion tests: " << i << std::endl;
     std::cout << "Remove tests: " << r << std::endl;
+    std::cout << "Join tests: " << j << std::endl;
+
 }
