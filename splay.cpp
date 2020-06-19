@@ -18,19 +18,43 @@ void SplayTree::splay(std::shared_ptr<Node> n) {
         std::shared_ptr<Node> parent = n->parent;
         std::shared_ptr<Node> grandparent = parent->parent;
         if (parent->left == n && grandparent->right == parent) {
-            // Case 2a: zig-zag
+            /* Case 2a: zig-zag
+             *   x
+             *    \
+             *     y
+             *    /
+             *   n
+             */
             rotate_right(parent);
             rotate_left(grandparent);
         } else if (parent->right == n && grandparent->left == parent) {
-            // Case 2b: zig-zag
+            /* Case 2b: zig-zag
+             *     x
+             *    /
+             *   y
+             *    \
+             *     n
+             */
             rotate_left(parent);
             rotate_right(grandparent);
         } else if (parent->right == n && grandparent->right == parent) {
-            // Case 3a: zig-zig right
+            /* Case 3a: zig-zig right
+             *  x
+             *   \
+             *    y
+             *     \
+             *      n
+             */
             rotate_left(grandparent);
             rotate_left(parent);
         } else {
-            // Case 3b: zig-zig left
+            /* Case 3b: zig-zig left
+             *        x
+             *      /
+             *    y
+             *  /
+             * n
+             */
             rotate_right(grandparent);
             rotate_right(parent);
         }
