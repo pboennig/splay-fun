@@ -16,7 +16,7 @@ typedef struct Node {
     int key;
     std::shared_ptr<Node> left;
     std::shared_ptr<Node> right;
-    std::weak_ptr<Node> parent;
+    std::weak_ptr<Node> parent; // weak_ptr to prevent memory leak via cyclic references
 } Node;
 
 class SplayTree {
@@ -34,6 +34,10 @@ class SplayTree {
 
         // join T into this, assuming that all elements in T are greater than the largest element in this
         void join(SplayTree& T);
+
+        // split this based on element x. After calling, this contains all elements <= x while we return tree T
+        // with all elements >= x
+        SplayTree split(int x);
 
     private:
         std::shared_ptr<Node> root;

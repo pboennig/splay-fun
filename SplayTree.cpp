@@ -23,9 +23,13 @@ void SplayTree::fix_parent(std::shared_ptr<Node> curr, std::shared_ptr<Node> suc
 }
 
 void SplayTree::remove(int val) {
-    std::shared_ptr<Node> curr = find(root, val);
-    if (!curr) return; // not in tree -> no-op
-    remove_node(curr);
+    try {
+        SplayTree r = split(val); // splay value to top
+        remove_node(root); // remove from root
+        join(r); // join remaining trees
+    } catch (const std::exception &e) {
+        return; // not in tree, no-op
+    }
 }
 
 void SplayTree::remove_node(std::shared_ptr<Node> curr) {

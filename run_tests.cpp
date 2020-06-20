@@ -73,10 +73,23 @@ bool join_tests(std::mt19937 g) {
     st_s.join(st_t);
     return check_equal(st_s, s);
 }
+
+bool split_tests(std::vector<int>& elems, std::mt19937 g) {
+    std::shuffle(elems.begin(), elems.end(), g);
+    SplayTree st;
+    std::for_each(elems.begin(), elems.end(), [&st](int &i) { st.insert(i); });
+    std::uniform_int_distribution<> dis(0, elems.size() - 1);
+    int split_num = dis(g);
+    SplayTree r = st.split(split_num);
+    std::vector<int> left_v = st.vec();
+    std::vector<int> right_v = r.vec();
+    int left_max = *std::max_element(left_v.begin(), left_v.end());
+    auto it = std::find_if(right_v.begin(), right_v.end(), [&left_max](int& i) { return left_max >= i; });
+    return (left_max == split_num && it == right_v.end());
+}
 int main() {
-    std::vector<int> elems;
-    for (int i = 0; i < NUM_ELEMS; i++) 
-        elems.push_back(i);
+    std::vector<int> elems(NUM_ELEMS);
+    std::iota(elems.begin(), elems.end(), 0);
 
     std::random_device rd;
     std::mt19937 g(rd());
@@ -86,8 +99,9 @@ int main() {
     bool i = insert_tests(splay_tree, s, elems, g);
     bool r = remove_tests(splay_tree, s, elems, g);
     bool j = join_tests(g);
+    bool sp = split_tests(elems, g);
     std::cout << "Insertion tests: " << i << std::endl;
     std::cout << "Remove tests: " << r << std::endl;
     std::cout << "Join tests: " << j << std::endl;
-
+    std::cout << "Split tests: " << sp << std::endl;
 }
