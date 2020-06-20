@@ -11,11 +11,12 @@ SplayTree::SplayTree() {
 
 void SplayTree::fix_parent(std::shared_ptr<Node> curr, std::shared_ptr<Node> succ) {
     int val = curr->key;
-    if (curr->parent) {
-        if (val < curr->parent->key)
-            curr->parent->left = succ;
+    std::shared_ptr<Node> parent = curr->parent.lock();
+    if (parent) {
+        if (val < parent->key)
+            parent->left = succ;
         else
-            curr->parent->right = succ;
+            parent->right = succ;
     } else {
         root = succ;
     }
@@ -64,7 +65,7 @@ void SplayTree::insert(int val) {
         else
             curr = curr->right;
     }
-    std::shared_ptr<Node> n = std::make_shared<Node>(Node{val, nullptr, nullptr, nullptr});
+    std::shared_ptr<Node> n = std::make_shared<Node>(Node{val, nullptr, nullptr, std::weak_ptr<Node>()});
 
     if (prev) {
         n->parent = prev;

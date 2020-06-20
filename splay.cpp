@@ -8,15 +8,15 @@
 void SplayTree::splay(std::shared_ptr<Node> n) {
     if (root == n) 
         return; // root case
-    if (n->parent == root) {
+    std::shared_ptr<Node> parent = n->parent.lock();
+    std::shared_ptr<Node> grandparent = parent->parent.lock();
+    if (parent == root) {
         // Case 1: zig
-        if (n->parent->left == n) 
-            rotate_right(n->parent);
+        if (parent->left == n) 
+            rotate_right(parent);
         else
-            rotate_left(n->parent);
+            rotate_left(parent);
     } else {
-        std::shared_ptr<Node> parent = n->parent;
-        std::shared_ptr<Node> grandparent = parent->parent;
         if (parent->left == n && grandparent->right == parent) {
             /* Case 2a: zig-zag
              *   x
@@ -64,7 +64,7 @@ void SplayTree::splay(std::shared_ptr<Node> n) {
 
 void SplayTree::rotate_right(std::shared_ptr<Node> n) {
     std::shared_ptr<Node> left_child = n->left;
-    std::shared_ptr<Node> parent = n->parent;
+    std::shared_ptr<Node> parent = n->parent.lock();
     n->left = left_child->right;
     if (n->left)
         n->left->parent = n;
@@ -81,7 +81,7 @@ void SplayTree::rotate_right(std::shared_ptr<Node> n) {
 
 void SplayTree::rotate_left(std::shared_ptr<Node> n) {
     std::shared_ptr<Node> right_child = n->right;
-    std::shared_ptr<Node> parent = n->parent;
+    std::shared_ptr<Node> parent = n->parent.lock();
     n->right = right_child->left;
     if (n->right)
         n->right->parent = n;

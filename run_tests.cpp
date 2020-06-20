@@ -65,10 +65,6 @@ bool join_tests(std::mt19937 g) {
     std::shuffle(v_1.begin(), v_1.end(), g);
     std::shuffle(v_2.begin(), v_2.end(), g);
 
-    for (int &i: v_1) {
-        s.insert(i);
-        st_s.insert(i);
-    }
     std::for_each(v_1.begin(), v_1.end(), [&s, &st_s](int &i) {
                                            s.insert(i); st_s.insert(i);});
     std::for_each(v_2.begin(), v_2.end(), [&t, &st_t](int &i) {

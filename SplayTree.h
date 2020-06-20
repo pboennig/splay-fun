@@ -16,7 +16,7 @@ typedef struct Node {
     int key;
     std::shared_ptr<Node> left;
     std::shared_ptr<Node> right;
-    std::shared_ptr<Node> parent;
+    std::weak_ptr<Node> parent;
 } Node;
 
 class SplayTree {
@@ -33,7 +33,7 @@ class SplayTree {
         std::vector<int> vec();
 
         // join T into this, assuming that all elements in T are greater than the largest element in this
-        void join(SplayTree T);
+        void join(SplayTree& T);
 
     private:
         std::shared_ptr<Node> root;
