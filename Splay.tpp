@@ -1,11 +1,12 @@
-/* Splay.cpp
+/* Splay.tpp
  * ---------
  * Splay functionality required for amortized behavior
  * of Splay Trees.
  */
 #include "SplayTree.h"
 
-void SplayTree::splay(std::shared_ptr<Node> n) {
+template<class T>
+void SplayTree<T>::splay(std::shared_ptr<Node> n) {
     if (root == n) 
         return; // root case
     std::shared_ptr<Node> parent = n->parent.lock();
@@ -62,7 +63,8 @@ void SplayTree::splay(std::shared_ptr<Node> n) {
     }
 }
 
-void SplayTree::rotate_right(std::shared_ptr<Node> n) {
+template<class T>
+void SplayTree<T>::rotate_right(std::shared_ptr<Node> n) {
     std::shared_ptr<Node> left_child = n->left;
     std::shared_ptr<Node> parent = n->parent.lock();
     n->left = left_child->right;
@@ -79,7 +81,8 @@ void SplayTree::rotate_right(std::shared_ptr<Node> n) {
     n->parent = left_child;
 }
 
-void SplayTree::rotate_left(std::shared_ptr<Node> n) {
+template<class T>
+void SplayTree<T>::rotate_left(std::shared_ptr<Node> n) {
     std::shared_ptr<Node> right_child = n->right;
     std::shared_ptr<Node> parent = n->parent.lock();
     n->right = right_child->left;

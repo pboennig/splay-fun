@@ -7,7 +7,7 @@
 
 int NUM_ELEMS = 100000;
 
-void print_vecs(SplayTree& st, std::set<int>& s) {
+void print_vecs(SplayTree<int>& st, std::set<int>& s) {
     std::vector<int> v = st.vec();
     std::cout << "Splay tree: ";
     for (const int& i: v)
@@ -20,7 +20,7 @@ void print_vecs(SplayTree& st, std::set<int>& s) {
     std::cout << std::endl;
 }
 
-bool check_equal(SplayTree& st, std::set<int>& s) {
+bool check_equal(SplayTree<int>& st, std::set<int>& s) {
     std::vector<int> v = st.vec();
     size_t i = 0;
     for (auto it = s.begin(); it != s.end(); ++it) {
@@ -32,7 +32,7 @@ bool check_equal(SplayTree& st, std::set<int>& s) {
     return true;
 }
 
-bool insert_tests(SplayTree& st, std::set<int>& s, std::vector<int>& elems, std::mt19937 g) {
+bool insert_tests(SplayTree<int>& st, std::set<int>& s, std::vector<int>& elems, std::mt19937 g) {
     std::shuffle(elems.begin(), elems.end(), g);
     for (int i = 0; i < NUM_ELEMS / 3; i++) {
         st.insert(elems[i]);
@@ -41,7 +41,7 @@ bool insert_tests(SplayTree& st, std::set<int>& s, std::vector<int>& elems, std:
     return check_equal(st, s);
 }
 
-bool remove_tests(SplayTree& st, std::set<int>& s, std::vector<int>& elems, std::mt19937 g) {
+bool remove_tests(SplayTree<int>& st, std::set<int>& s, std::vector<int>& elems, std::mt19937 g) {
     std::shuffle(elems.begin(), elems.end(), g);
     for (int i = 0; i < NUM_ELEMS; i++) {
         st.remove(elems[i]);
@@ -53,8 +53,8 @@ bool join_tests(std::mt19937 g) {
     std::set<int> s;
     std::set<int> t;
 
-    SplayTree st_s;
-    SplayTree st_t;
+    SplayTree<int> st_s;
+    SplayTree<int> st_t;
 
     std::vector<int> v_1(100);
     std::vector<int> v_2(100);
@@ -76,11 +76,11 @@ bool join_tests(std::mt19937 g) {
 
 bool split_tests(std::vector<int>& elems, std::mt19937 g) {
     std::shuffle(elems.begin(), elems.end(), g);
-    SplayTree st;
+    SplayTree<int> st;
     std::for_each(elems.begin(), elems.end(), [&st](int &i) { st.insert(i); });
     std::uniform_int_distribution<> dis(0, elems.size() - 1);
     int split_num = dis(g);
-    SplayTree r = st.split(split_num);
+    SplayTree<int> r = st.split(split_num);
     std::vector<int> left_v = st.vec();
     std::vector<int> right_v = r.vec();
     int left_max = *std::max_element(left_v.begin(), left_v.end());
@@ -94,7 +94,7 @@ int main() {
     std::random_device rd;
     std::mt19937 g(rd());
 
-    SplayTree splay_tree;
+    SplayTree<int> splay_tree;
     std::set<int> s;
     bool i = insert_tests(splay_tree, s, elems, g);
     bool r = remove_tests(splay_tree, s, elems, g);

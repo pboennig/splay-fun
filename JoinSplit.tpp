@@ -1,24 +1,26 @@
-/* JoinSplit.cpp  
+/* JoinSplit.tpp  
  * ---------
  *  Implementation of join and split functions. 
  */
 #include "SplayTree.h"
 #include <stdexcept>
 
-void SplayTree::join(SplayTree& T) {
+template <class T>
+void SplayTree<T>::join(SplayTree<T>& S) {
     std::shared_ptr<Node> max = root; 
     if (root) {
         while (max->right) { max  = max->right; }
         splay(max);
-        root->right = T.root;
-        if (T.root)
-            T.root->parent = root;
+        root->right = S.root;
+        if (S.root)
+            S.root->parent = root;
     } else {
-        root = T.root;
+        root = S.root;
     }
 }
 
-SplayTree SplayTree::split(int x) {
+template <class T>
+SplayTree<T> SplayTree<T>::split(T x) {
     std::shared_ptr<Node> n = find(root, x);
     if (n == nullptr)
         throw std::invalid_argument("Value not in SplayTree");

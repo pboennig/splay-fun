@@ -1,16 +1,18 @@
-/* SplayTree.cpp
+/* SplayTree.tpp
  * ---------
  * Core BST functions for SplayTree, using a normal BST with
  * parent pointer.
  */
 #include "SplayTree.h"
 
-SplayTree::SplayTree() {
+template <class T>
+SplayTree<T>::SplayTree() {
     root = nullptr;
 }
 
-void SplayTree::fix_parent(std::shared_ptr<Node> curr, std::shared_ptr<Node> succ) {
-    int val = curr->key;
+template <class T>
+void SplayTree<T>::fix_parent(std::shared_ptr<Node> curr, std::shared_ptr<Node> succ) {
+    T val = curr->key;
     std::shared_ptr<Node> parent = curr->parent.lock();
     if (parent) {
         if (val < parent->key)
@@ -22,9 +24,10 @@ void SplayTree::fix_parent(std::shared_ptr<Node> curr, std::shared_ptr<Node> suc
     }
 }
 
-void SplayTree::remove(int val) {
+template <class T>
+void SplayTree<T>::remove(T val) {
     try {
-        SplayTree r = split(val); // splay value to top
+        SplayTree<T> r = split(val); // splay value to top
         remove_node(root); // remove from root
         join(r); // join remaining trees
     } catch (const std::exception &e) {
@@ -32,7 +35,8 @@ void SplayTree::remove(int val) {
     }
 }
 
-void SplayTree::remove_node(std::shared_ptr<Node> curr) {
+template <class T>
+void SplayTree<T>::remove_node(std::shared_ptr<Node> curr) {
     if (!curr->left && !curr->right) {
         // Case 1: No children
         fix_parent(curr, nullptr);
@@ -52,14 +56,16 @@ void SplayTree::remove_node(std::shared_ptr<Node> curr) {
     }
 }
 
-std::shared_ptr<Node> SplayTree::succ_r(std::shared_ptr<Node>  n) {
+template <class T>
+std::shared_ptr<typename SplayTree<T>::Node> SplayTree<T>::succ_r(std::shared_ptr<Node>  n) {
     // find left-most right child (successor)
     std::shared_ptr<Node> succ = n->right; 
     while (succ->left) { succ = succ->left; }
     return succ;
 }
 
-void SplayTree::insert(int val) {
+template <class T>
+void SplayTree<T>::insert(T val) {
     std::shared_ptr<Node> prev = nullptr;
     std::shared_ptr<Node> curr = root;
     while (curr) {
@@ -83,24 +89,28 @@ void SplayTree::insert(int val) {
     splay(n);
 }
 
-bool SplayTree::lookup(int val) {
+template <class T>
+bool SplayTree<T>::lookup(T val) {
     std::shared_ptr<Node> n = find(root, val);
     if (!n) return false;
     splay(n); // hot nodes go to top
     return true;
 }
 
-std::shared_ptr<Node> SplayTree::find(std::shared_ptr<Node> n, int val) {
+template <class T>
+std::shared_ptr<typename SplayTree<T>::Node> SplayTree<T>::find(std::shared_ptr<Node> n, T val) {
     if (!n || n->key == val) return n;
     if (val < n->key) return find(n->left, val);
     else return find(n->right, val);
 }
 
-std::vector<int> SplayTree::vec() {
+template <class T>
+std::vector<T> SplayTree<T>::vec() {
     return vec_r(root);
 }
 
-std::vector<int> SplayTree::vec_r(std::shared_ptr<Node> n) {
+template <class T>
+std::vector<T> SplayTree<T>::vec_r(std::shared_ptr<Node> n) {
     if (!n) return std::vector<int>();
     std::vector l = vec_r(n->left);
     l.push_back(n->key);
