@@ -27,7 +27,7 @@ class SplayTree {
         // BST ops
         void insert(int val);
         void remove(int val); // no-op if not in tree
-        bool lookup(int val);
+        bool lookup(int val); // splays node (if in tree) to top for working set property
 
         // returns SplayTree as std::vector<int>
         std::vector<int> vec();

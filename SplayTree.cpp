@@ -86,7 +86,7 @@ void SplayTree::insert(int val) {
 bool SplayTree::lookup(int val) {
     std::shared_ptr<Node> n = find(root, val);
     if (!n) return false;
-    splay(n);
+    splay(n); // hot nodes go to top
     return true;
 }
 
