@@ -69,7 +69,8 @@ bool join_tests(std::mt19937 g) {
                                            s.insert(i); st_s.insert(i);});
     std::for_each(v_2.begin(), v_2.end(), [&t, &st_t](int &i) {
                                            t.insert(i); st_t.insert(i);});
-    s.merge(t);
+    for (const int& i: t)
+      s.insert(i);
     st_s.join(st_t);
     return check_equal(st_s, s);
 }
@@ -87,6 +88,7 @@ bool split_tests(std::vector<int>& elems, std::mt19937 g) {
     auto it = std::find_if(right_v.begin(), right_v.end(), [&left_max](int& i) { return left_max >= i; });
     return (left_max == split_num && it == right_v.end());
 }
+
 int main() {
     std::vector<int> elems(NUM_ELEMS);
     std::iota(elems.begin(), elems.end(), 0);

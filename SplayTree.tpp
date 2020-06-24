@@ -57,7 +57,7 @@ void SplayTree<T>::remove_node(std::shared_ptr<Node> curr) {
 }
 
 template <class T>
-std::shared_ptr<typename SplayTree<T>::Node> SplayTree<T>::succ_r(std::shared_ptr<Node>  n) {
+std::shared_ptr<typename SplayTree<T>::Node> SplayTree<T>::succ_r(std::shared_ptr<Node>  n) const {
     // find left-most right child (successor)
     std::shared_ptr<Node> succ = n->right; 
     while (succ->left) { succ = succ->left; }
@@ -98,23 +98,23 @@ bool SplayTree<T>::lookup(T val) {
 }
 
 template <class T>
-std::shared_ptr<typename SplayTree<T>::Node> SplayTree<T>::find(std::shared_ptr<Node> n, T val) {
+std::shared_ptr<typename SplayTree<T>::Node> SplayTree<T>::find(std::shared_ptr<Node> n, T val) const {
     if (!n || n->key == val) return n;
     if (val < n->key) return find(n->left, val);
     else return find(n->right, val);
 }
 
 template <class T>
-std::vector<T> SplayTree<T>::vec() {
+std::vector<T> SplayTree<T>::vec() const {
     return vec_r(root);
 }
 
 template <class T>
-std::vector<T> SplayTree<T>::vec_r(std::shared_ptr<Node> n) {
+std::vector<T> SplayTree<T>::vec_r(std::shared_ptr<Node> n) const {
     if (!n) return std::vector<int>();
-    std::vector l = vec_r(n->left);
+    std::vector<T> l = vec_r(n->left);
     l.push_back(n->key);
-    std::vector r = vec_r(n->right);
+    std::vector<T> r = vec_r(n->right);
     l.insert(l.end(), r.begin(), r.end());
     return l;
 }

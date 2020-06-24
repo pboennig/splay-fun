@@ -1,8 +1,8 @@
 /* SplayTree
  * ---------
- *  Implementation of a splay tree structure for ints, first described by
+ *  Implementation of a splay tree container, first described by
  *  Sleator and Tarjan in 1985. By splaying, O(log n) amortized for all
- *  operations and, as shown in CS166, fulfills balance (RB, etc.) property,
+ *  operations and, as shown in CS166, fulfills balance propery (equivalent to RB, etc.),
  *  entropy property (weight-balanced), dynamic finger (lookups "local"), and
  *  working set property in one structure!
  */
@@ -12,6 +12,8 @@
 #define Splay
 #include <cstddef>
 #include <vector>
+#include <iterator>
+#include <memory>
 
 template <class T>
 class SplayTree {
@@ -22,6 +24,17 @@ class SplayTree {
         std::weak_ptr<Node> parent; // weak_ptr to prevent memory leak via cyclic references
     } Node;
 
+    class iterator {
+        public: 
+            using value_type = T;
+            using difference_type = std::ptrdiff_t;
+            using pointer = std::shared_ptr<Node>;
+            using reference = Node&;
+            using iterator_category = std::forward_iterator_tag;
+            T operator*() {
+                return this->key;
+            }
+    };
     public: 
 
         SplayTree();
@@ -33,7 +46,7 @@ class SplayTree {
         bool lookup(T); // splays node (if in tree) to top for working set property
 
         // returns SplayTree as std::vector<int>
-        std::vector<T> vec();
+        std::vector<T> vec() const;
 
         // join S into this, assuming that all elements in S are greater than the largest element in this
         void join(SplayTree<T>& S);
@@ -49,9 +62,9 @@ class SplayTree {
         void splay(std::shared_ptr<Node> n);
 
         //recursive helpers
-        std::vector<T> vec_r(std::shared_ptr<Node> n); 
-        std::shared_ptr<Node> succ_r(std::shared_ptr<Node> n);
-        std::shared_ptr<Node> find(std::shared_ptr<Node> n, T val);
+        std::vector<T> vec_r(std::shared_ptr<Node> n) const; 
+        std::shared_ptr<Node> succ_r(std::shared_ptr<Node> n) const;
+        std::shared_ptr<Node> find(std::shared_ptr<Node> n, T val) const;
 
         // remove helpers
         void remove_node(std::shared_ptr<Node> curr); // removes node (not value)
