@@ -24,6 +24,7 @@ class SplayTree {
         std::weak_ptr<Node> parent; // weak_ptr to prevent memory leak via cyclic references
     } Node;
 
+    // beginnings of iterator class
     class iterator {
         public: 
             using value_type = T;
