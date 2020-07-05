@@ -24,7 +24,7 @@ class SplayTree {
         std::weak_ptr<Node> parent; // weak_ptr to prevent memory leak via cyclic references
     } Node;
 
-    // beginnings of iterator class
+    // beginnings of iterator class, not implemented yet
     class iterator {
         public: 
             using value_type = T;
@@ -46,7 +46,7 @@ class SplayTree {
         void remove(T); // no-op if not in tree
         bool lookup(T); // splays node (if in tree) to top for working set property
 
-        // returns SplayTree as std::vector<int>
+        // returns SplayTree as std::vector<int>, no need once iterator is completed
         std::vector<T> vec() const;
 
         // join S into this, assuming that all elements in S are greater than the largest element in this

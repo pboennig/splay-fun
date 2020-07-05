@@ -63,6 +63,14 @@ void SplayTree<T>::splay(std::shared_ptr<Node> n) {
     }
 }
 
+
+/* Functions:: rotate_right and rotate_left
+ * --------
+ * Rotation functions, same behavior as in red-black trees.
+ * Necessary for splaying, as we attempt to balance the tree
+ * by removing runs of same-direction edges.
+ */
+
 template<class T>
 void SplayTree<T>::rotate_right(std::shared_ptr<Node> n) {
     std::shared_ptr<Node> left_child = n->left;
