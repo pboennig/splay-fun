@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <random>
 
-int NUM_ELEMS = 100000;
+int NUM_ELEMS = 10;
 
 void print_vecs(SplayTree<int>& st, std::set<int>& s) {
     std::vector<int> v = st.vec();
@@ -22,12 +22,12 @@ void print_vecs(SplayTree<int>& st, std::set<int>& s) {
 
 bool check_equal(SplayTree<int>& st, std::set<int>& s) {
     std::vector<int> v = st.vec();
-    size_t i = 0;
+    auto st_it = st.begin();
     for (auto it = s.begin(); it != s.end(); ++it) {
-        if (*it != v[i]) {
+        if (*it != *st_it) {
             return false;
         }
-        ++i;
+        ++st_it;
     }
     return true;
 }

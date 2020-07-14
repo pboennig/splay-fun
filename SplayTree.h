@@ -27,14 +27,20 @@ class SplayTree {
     // beginnings of iterator class, not implemented yet
     class iterator {
         public: 
-            using value_type = T;
-            using difference_type = std::ptrdiff_t;
-            using pointer = std::shared_ptr<Node>;
-            using reference = Node&;
-            using iterator_category = std::forward_iterator_tag;
-            T operator*() {
-                return this->key;
-            }
+          using value_type = T;
+          using difference_type = std::ptrdiff_t;
+          using pointer = std::shared_ptr<Node>;
+          using reference = Node&;
+          using iterator_category = std::forward_iterator_tag;
+          iterator(SplayTree* st, pointer ptr) : st_(st), ptr_(ptr) {};
+          iterator operator++(int x) { iterator res = this; ++*this; return iterator(st_, res); };
+          iterator operator++() { ptr_ = st_->succ_r(ptr_); return *this; };
+          value_type operator*() { return ptr_->key; };
+          bool operator==(const iterator& rhs) {return (st_ == rhs.st_ && ptr_ == rhs.ptr_);};
+          bool operator!=(const iterator& rhs) {return !(this == rhs);};
+        private:
+          SplayTree *st_; 
+          pointer ptr_;
     };
     public: 
 
@@ -56,8 +62,18 @@ class SplayTree {
         // with all elements >= x
         SplayTree split(T x);
 
-    private:
+        iterator begin() {
+          std::shared_ptr<Node> curr = root;
+          if (curr)  
+            while(curr->left) { curr = curr->left; }
 
+          return iterator(this, curr);
+        }
+        iterator end() {
+          return iterator(this, nullptr);
+        }
+
+    private:
         std::shared_ptr<Node> root;
         // splays Node n to root
         void splay(std::shared_ptr<Node> n);

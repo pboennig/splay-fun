@@ -59,6 +59,7 @@ void SplayTree<T>::remove_node(std::shared_ptr<Node> curr) {
 template <class T>
 std::shared_ptr<typename SplayTree<T>::Node> SplayTree<T>::succ_r(std::shared_ptr<Node>  n) const {
     // find left-most right child (successor)
+    if (n == nullptr || n->right == nullptr) return nullptr;
     std::shared_ptr<Node> succ = n->right; 
     while (succ->left) { succ = succ->left; }
     return succ;
