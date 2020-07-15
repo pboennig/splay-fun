@@ -5,12 +5,11 @@
 #include <algorithm>
 #include <random>
 
-int NUM_ELEMS = 10;
+int NUM_ELEMS = 100000;
 
 void print_vecs(SplayTree<int>& st, std::set<int>& s) {
-    std::vector<int> v = st.vec();
     std::cout << "Splay tree: ";
-    for (const int& i: v)
+    for (const int& i: st)
         std::cout << i << " ";
     std::cout << std::endl;
 
@@ -21,7 +20,6 @@ void print_vecs(SplayTree<int>& st, std::set<int>& s) {
 }
 
 bool check_equal(SplayTree<int>& st, std::set<int>& s) {
-    std::vector<int> v = st.vec();
     auto st_it = st.begin();
     for (auto it = s.begin(); it != s.end(); ++it) {
         if (*it != *st_it) {
@@ -82,11 +80,9 @@ bool split_tests(std::vector<int>& elems, std::mt19937 g) {
     std::uniform_int_distribution<> dis(0, elems.size() - 1);
     int split_num = dis(g);
     SplayTree<int> r = st.split(split_num);
-    std::vector<int> left_v = st.vec();
-    std::vector<int> right_v = r.vec();
-    int left_max = *std::max_element(left_v.begin(), left_v.end());
-    auto it = std::find_if(right_v.begin(), right_v.end(), [&left_max](int& i) { return left_max >= i; });
-    return (left_max == split_num && it == right_v.end());
+    int left_max = *std::max_element(st.begin(), st.end());
+    auto it = std::find_if(r.begin(), r.end(), [&left_max](int i) { return left_max >= i; });
+    return (left_max == split_num && it == r.end());
 }
 
 int main() {
