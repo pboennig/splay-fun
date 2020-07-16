@@ -85,6 +85,8 @@ class SplayTree {
          */ 
         SplayTree split(T x);
 
+        size_t size() { return _size; }
+
         /* Functions: begin() and end() 
          * --------
          * Iterator begin and end functions for use with STL functions.
@@ -113,6 +115,7 @@ class SplayTree {
 
     private:
         std::shared_ptr<Node> root;
+        size_t _size;
 
         /* Function: splay
          * -------
@@ -151,6 +154,7 @@ class SplayTree {
 template <class T>
 SplayTree<T>::SplayTree() {
     root = nullptr;
+    _size = 0;
 }
 
 template <class T>
@@ -173,6 +177,7 @@ void SplayTree<T>::remove(T val) {
         SplayTree<T> r = split(val); // splay value to top
         remove_node(root); // remove from root
         join(r); // join remaining trees
+        --_size;
     } catch (const std::exception &e) {
         return; // not in tree, no-op
     }
@@ -237,6 +242,7 @@ void SplayTree<T>::insert(T val) {
     } else {
         root = n;
     }
+    ++_size;
     splay(n);
 }
 

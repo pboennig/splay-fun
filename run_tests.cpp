@@ -1,9 +1,11 @@
 #include "SplayTree.h"
 #include <cmath>
 #include <iostream>
+#include <fstream>
 #include <set>
 #include <algorithm>
 #include <random>
+#include <chrono>
 
 int NUM_ELEMS = 100000;
 
@@ -85,6 +87,56 @@ bool split_tests(std::vector<int>& elems, std::mt19937 g) {
     return (left_max == split_num && it == r.end());
 }
 
+int MAX_N = 100000;
+
+typedef enum STFunction {
+  INSERT = 1,
+  REMOVE = 2,
+  LOOKUP = 3
+} STFunction;
+
+
+double time_st_function(SplayTree<int>& st, STFunction st_function, int arg) {
+  if (st_function == INSERT) {
+    auto start = std::chrono::high_resolution_clock::now();
+    st.insert(arg);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    return elapsed.count();
+  } else if (st_function == REMOVE) {
+    auto start = std::chrono::high_resolution_clock::now();
+    st.remove(arg);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    return elapsed.count();
+  } else {
+    auto start = std::chrono::high_resolution_clock::now();
+    st.lookup(arg);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    return elapsed.count();
+  }
+}
+
+void time_test() {
+  std::vector<int> elems(MAX_N);
+  std::iota(elems.begin(), elems.end(), 0);
+
+  std::random_device rd;
+  std::mt19937 g(rd());
+  std::shuffle(elems.begin(), elems.end(), g);
+  SplayTree<int> st;
+  std::ofstream csv;
+  csv.open("balance.csv");
+  csv << "N, Insert, Lookup, Remove" << std::endl;
+  for (size_t i = 0; i < elems.size(); ++i) {
+    csv << i << ",";
+    csv << time_st_function(st, INSERT, elems[i]) << ",";
+    csv << time_st_function(st, LOOKUP, elems[i]) << ",";
+    csv << time_st_function(st, REMOVE, elems[i]) << std::endl;
+    st.insert(elems[i]); // need to actually grow the st
+  }
+}
 int main() {
     std::vector<int> elems(NUM_ELEMS);
     std::iota(elems.begin(), elems.end(), 0);
@@ -102,4 +154,6 @@ int main() {
     std::cout << "Remove tests: " << r << std::endl;
     std::cout << "Join tests: " << j << std::endl;
     std::cout << "Split tests: " << sp << std::endl;
+
+    time_test();
 }
